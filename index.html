@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>角田先生スケジュールカレンダー</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="title-block">
+          <p class="eyebrow">Tsunoda Schedule</p>
+          <h1>角田先生スケジュールカレンダー</h1>
+        </div>
+        <div class="status-inline" aria-live="polite">
+          <span id="loadingState" class="loading-chip">読み込み中...</span>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="primary-panel" aria-label="カレンダー表示領域">
+          <section class="toolbar card">
+            <div class="month-nav" aria-label="月移動">
+              <button type="button" class="nav-button" id="prevMonthBtn" aria-label="前月">
+                ‹
+              </button>
+              <div class="month-head">
+                <p class="month-caption">表示月</p>
+                <h2 id="currentMonthLabel">--</h2>
+              </div>
+              <button type="button" class="nav-button" id="nextMonthBtn" aria-label="翌月">
+                ›
+              </button>
+              <button type="button" class="today-button" id="todayBtn">今月へ戻る</button>
+            </div>
+
+            <div class="view-switch" role="tablist" aria-label="表示切替">
+              <button
+                type="button"
+                class="tab-button is-active"
+                id="calendarTab"
+                role="tab"
+                aria-selected="true"
+                aria-controls="calendarView"
+                data-view="calendar"
+              >
+                カレンダー
+              </button>
+              <button
+                type="button"
+                class="tab-button"
+                id="listTab"
+                role="tab"
+                aria-selected="false"
+                aria-controls="listView"
+                data-view="list"
+              >
+                リスト
+              </button>
+            </div>
+          </section>
+
+          <section id="errorBanner" class="error-banner card is-hidden" aria-live="assertive">
+            <div>
+              <h3>CSVの取得に失敗しました</h3>
+              <p id="errorMessage">ネットワーク状態を確認して再試行してください。</p>
+            </div>
+            <button type="button" class="retry-button" id="retryBtn">再試行</button>
+          </section>
+
+          <section
+            id="calendarView"
+            class="view-panel"
+            role="tabpanel"
+            aria-labelledby="calendarTab"
+          >
+            <div class="calendar card">
+              <div class="weekdays" aria-hidden="true">
+                <span>月</span>
+                <span>火</span>
+                <span>水</span>
+                <span>木</span>
+                <span>金</span>
+                <span>土</span>
+                <span>日</span>
+              </div>
+              <div id="calendarGrid" class="calendar-grid" aria-live="polite"></div>
+            </div>
+          </section>
+
+          <section
+            id="listView"
+            class="view-panel is-hidden"
+            role="tabpanel"
+            aria-labelledby="listTab"
+          >
+            <div class="list card">
+              <div id="listSummary" class="list-summary">0件</div>
+              <div id="listContainer" class="list-container"></div>
+            </div>
+          </section>
+
+          <section class="filters card" aria-label="絞り込み">
+            <div class="toggle-row">
+              <label class="toggle-control" for="tsunodaOnlyToggle">
+                <input type="checkbox" id="tsunodaOnlyToggle" />
+                <span>角田先生のみ表示</span>
+              </label>
+              <button type="button" class="ghost-button" id="clearFiltersBtn">絞り込み解除</button>
+            </div>
+
+            <div class="venue-filter">
+              <div class="filter-heading">
+                <h3>会場で絞り込み</h3>
+                <p id="venueCountText">--</p>
+              </div>
+              <div id="venueFilters" class="venue-options" role="group" aria-label="会場フィルタ"></div>
+            </div>
+          </section>
+        </section>
+
+      </main>
+    </div>
+
+    <dialog id="detailDialog" class="detail-dialog" aria-labelledby="detailTitle">
+      <div id="detailPanel" class="detail-panel">
+        <button type="button" class="detail-close" id="detailCloseBtn" aria-label="閉じる">×</button>
+        <div class="detail-header">
+          <div>
+            <p class="detail-label">選択中の日付</p>
+            <h2 id="detailTitle">予定詳細</h2>
+          </div>
+          <span id="detailCount" class="detail-count">0件</span>
+        </div>
+        <div id="detailMeta" class="detail-meta">日付を選択すると予定が表示されます。</div>
+        <div id="detailList" class="detail-list empty-state">
+          カレンダーの日付、またはリストの項目を選択してください。
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Local check: python3 -m http.server 8765 --bind 127.0.0.1 -->
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
