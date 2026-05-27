@@ -426,6 +426,9 @@ button {
 
 .calendar-day-head .count-badge {
   margin-left: auto;
+  padding: 2px 7px;
+  min-height: 20px;
+  font-size: 0.72rem;
 }
 
 .tsunoda-dot {
@@ -798,8 +801,8 @@ button {
 
 @media (max-width: 720px) {
   .app-shell {
-    width: min(100% - 16px, 100%);
-    padding-top: 14px;
+    width: min(100% - 12px, 100%);
+    padding-top: 10px;
   }
 
   .topbar,
@@ -821,34 +824,80 @@ button {
   }
 
   .weekdays span {
-    font-size: 0.82rem;
+    font-size: 0.74rem;
   }
 
   .calendar-grid {
-    gap: 8px;
+    gap: 4px;
+    grid-auto-rows: minmax(72px, auto);
   }
 
   .calendar-day {
-    min-height: 110px;
-    padding: 8px 7px 10px;
+    min-height: 72px;
+    padding: 4px 4px 6px;
+    border-radius: 9px;
   }
 
+  .calendar-day-head {
+    gap: 3px;
+    margin-bottom: 3px;
+    min-height: 1.2rem;
+  }
+
+  .day-number {
+    min-width: 1.2rem;
+    height: 1.2rem;
+    font-size: 0.78rem;
+  }
+
+  .count-badge {
+    min-width: 18px;
+    height: 16px;
+    font-size: 0.66rem;
+    padding: 0 4px;
+  }
+
+  .tsunoda-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  /* スマホでは横バー・トピック名は非表示にして、地域チップだけを並べる */
   .calendar-day-list {
-    gap: 4px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 3px;
   }
 
-  .calendar-day-item {
-    padding: 5px 7px;
+  .event-pill {
+    padding: 0;
+    border: none;
+    background: transparent !important;
   }
 
-  .calendar-day-topic {
-    font-size: 0.82rem;
-    -webkit-line-clamp: 1;
-    line-clamp: 1;
+  .event-pill-bar,
+  .event-pill-text {
+    display: none;
   }
 
-  .calendar-day-meta {
-    font-size: 0.72rem;
+  .event-pill-city {
+    padding: 1px 4px;
+    font-size: 0.62rem;
+    border-radius: 3px;
+    letter-spacing: 0.02em;
+  }
+
+  .calendar-day-more {
+    font-size: 0.65rem;
+    width: 100%;
+    text-align: left;
+    margin: 0;
+  }
+
+  /* リスト/詳細はそのまま読みやすく */
+  .event-card,
+  .list-item {
+    padding: 12px;
   }
 }
 
@@ -857,13 +906,17 @@ button {
   .filters,
   .calendar,
   .list,
-  .detail-panel,
   .error-banner {
-    padding: 14px;
+    padding: 10px 12px;
   }
 
   .month-head {
-    min-width: 120px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .month-head h2 {
+    font-size: 1.05rem;
   }
 
   .today-button,
@@ -882,10 +935,22 @@ button {
   }
 
   .calendar-day {
-    min-height: 84px;
+    min-height: 64px;
   }
 
   .calendar-day-extra {
     display: none;
+  }
+
+  .venue-option {
+    min-height: 28px;
+    font-size: 0.76rem;
+    padding: 0 8px;
+  }
+
+  .venue-count {
+    height: 18px;
+    min-width: 20px;
+    font-size: 0.66rem;
   }
 }
