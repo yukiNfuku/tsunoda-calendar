@@ -494,6 +494,19 @@ button {
   flex-shrink: 0;
 }
 
+.event-pill-city {
+  display: inline-block;
+  flex-shrink: 0;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: var(--city-color, #9c9384);
+  color: #fff;
+  line-height: 1.3;
+}
+
 .event-pill-text {
   flex: 1 1 auto;
   min-width: 0;

@@ -39,6 +39,38 @@ function venueGroupColor(venue) {
   return VENUE_GROUPS.find((g) => g.key === key)?.color ?? "#999";
 }
 
+// 会場名から大まかな地域ラベルを返す（先生がどこへ行けばよいかが一目でわかるように）
+function cityFor(venue) {
+  if (!venue) return "未定";
+  const v = venue;
+  if (/新大阪|大阪/.test(v)) return "大阪";
+  if (/神戸|兵庫|花隈/.test(v)) return "兵庫";
+  if (/福岡/.test(v)) return "福岡";
+  // それ以外は東京エリア（サクラステージ・渋谷・品川・東京日本橋・銀座・恵比寿・御茶ノ水・東京研修センター・アークレイ など）
+  if (
+    /サクラステージ|東京|渋谷|品川|日本橋|銀座|恵比寿|御茶ノ水|アークレイ|SCHMATZ|SHARING|TKP|ノーガード|ビジョンセンター|アットビジネス/.test(
+      v,
+    )
+  )
+    return "東京";
+  return "その他";
+}
+
+function cityColor(city) {
+  switch (city) {
+    case "東京":
+      return "#5e8fb4";
+    case "大阪":
+      return "#7ba56a";
+    case "兵庫":
+      return "#d97a4a";
+    case "福岡":
+      return "#a07ba0";
+    default:
+      return "#9c9384";
+  }
+}
+
 const state = {
   allItems: [],
   filteredItems: [],
@@ -311,10 +343,12 @@ function renderCalendar() {
             ]
               .filter(Boolean)
               .join(" ");
+            const city = cityFor(item.venue);
             const title = `${item.topic || item.item || "予定"}${item.venue ? ` @ ${item.venue}` : ""}${item.timeLabel && item.timeLabel !== "時間未定" ? ` (${item.timeLabel})` : ""}`;
             return `
               <div class="${classes}" style="--pill-accent:${color}" title="${escapeHtml(title)}">
                 <span class="event-pill-bar" aria-hidden="true"></span>
+                <span class="event-pill-city" style="--city-color:${cityColor(city)}">${escapeHtml(city)}</span>
                 <span class="event-pill-text">${escapeHtml(item.topic || item.item || "予定")}</span>
               </div>
             `;
@@ -408,7 +442,8 @@ function renderDetails() {
 
   if (!state.selectedDate || items.length === 0) {
     elements.detailTitle.textContent = "予定詳細";
-    elements.detailMeta.textContent = "日付を選択すると予定が表示されます。";
+    elements.detailMeta.textContent = "";
+    elements.detailMeta.classList.add("is-hidden");
     elements.detailCount.textContent = "0件";
     elements.detailList.className = "detail-list empty-state";
     elements.detailList.textContent = "現在の絞り込み条件では選択日の予定がありません。";
@@ -417,7 +452,8 @@ function renderDetails() {
 
   const date = items[0].date;
   elements.detailTitle.textContent = formatFullDate(date);
-  elements.detailMeta.textContent = "トピック、時間、会場、受講生数、角田先生の予定を表示しています。";
+  elements.detailMeta.textContent = "";
+  elements.detailMeta.classList.add("is-hidden");
   elements.detailCount.textContent = `${items.length}件`;
   elements.detailList.className = "detail-list";
   elements.detailList.innerHTML = items
