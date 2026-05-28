@@ -255,7 +255,8 @@ export function addMonths(date, diff) {
 
 export function getCalendarDays(monthDate) {
   const start = getMonthStart(monthDate);
-  const firstDayIndex = (start.getDay() + 6) % 7;
+  // 日曜始まり: Sunday=0 のままオフセットに使う
+  const firstDayIndex = start.getDay();
   const gridStart = new Date(start.getFullYear(), start.getMonth(), 1 - firstDayIndex, 12);
   const days = [];
 
